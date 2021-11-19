@@ -89,6 +89,16 @@ az k8s-configuration flux create \
 --branch main \
 --kustomization name=my-kustomization
 
+
+# Testing delete
+# TODO: Clean this up
+az k8s-configuration flux delete \
+--resource-group $NAME \
+--cluster-name $NAME \
+--cluster-type managedClusters \
+--name myconfig
+
+
 # OLD Flux v1
 az k8s-configuration flux --name aks-gitops-demo \
 --cluster-name $NAME \
