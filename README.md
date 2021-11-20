@@ -18,10 +18,10 @@ az extension update --name aks-preview
 az extension update --name k8sconfiguration
 
 # Install the GitOps feature
-az feature register --namespace "Microsoft.ContainerService" --name aks-gitops
+az feature register --namespace "Microsoft.ContainerService" --name AKS-ExtensionManager
 
 # Check the results
-az feature list -o table --query "[?contains(name, 'Microsoft.ContainerService/aks-gitops')].{Name:name,State:properties.state}"
+az feature list -o table --query "[?contains(name, 'Microsoft.ContainerService/AKS-ExtensionManager')].{Name:name,State:properties.state}"
 
 # Make sure it's enabled by reregistering
 az provider register -n Microsoft.ContainerService
@@ -35,7 +35,7 @@ These variables will be used throughout the demo.
 ```bash
 
 # This will be used as the name of the RG and cluster
-NAME=cdw-kubernetes-20211117
+NAME=cdw-kubernetes-20211120
 
 # The AKS gitops add-on is only available in a few locations while in preview
 LOCATION=eastus
@@ -62,9 +62,9 @@ az aks create \
 --name $NAME \
 --location $LOCATION \
 --kubernetes-version 1.21.2 \
+--node-count 1 \
 --generate-ssh-keys \
---enable-managed-identity \
---enable-addons gitops
+--enable-managed-identity
 
 # --enable-addons monitoring
 
@@ -89,26 +89,12 @@ az k8s-configuration flux create \
 --branch main \
 --kustomization name=my-kustomization
 
-
 # Testing delete
-# TODO: Clean this up
 az k8s-configuration flux delete \
 --resource-group $NAME \
 --cluster-name $NAME \
 --cluster-type managedClusters \
 --name myconfig
-
-
-# OLD Flux v1
-az k8s-configuration flux --name aks-gitops-demo \
---cluster-name $NAME \
---resource-group $NAME \
---operator-instance-name cluster-config \
---operator-namespace cluster-config \
---repository-url https://github.com/PixelRobots/aks-gitops-demo.git \
---scope cluster \
---cluster-type managedClusters \
---operator-params='--git-branch=main'
 
 ```
 
