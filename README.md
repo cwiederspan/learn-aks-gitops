@@ -10,7 +10,7 @@ As part of this demo, make sure all of the preview extensions are up to date.
 
 ```bash
 
-# Add (or register) the Azure CLI extensions
+# Add (or update) the Azure CLI extensions
 az extension add --name aks-preview
 az extension add --name k8sconfiguration
 
@@ -89,7 +89,7 @@ az k8s-configuration flux create \
 --branch main \
 --kustomization name=my-kustomization
 
-# Testing delete
+# Delete the configuration if necessary
 az k8s-configuration flux delete \
 --resource-group $NAME \
 --cluster-name $NAME \
@@ -100,7 +100,7 @@ az k8s-configuration flux delete \
 
 ### Clean up the cluster or entire resource group
 
-```
+```bash
 
 # Delete cluster
 az aks delete \
